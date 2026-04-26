@@ -1,0 +1,42 @@
+PASS src/alerts/dispatchAlerts.test.ts (6.217 s)
+PASS src/incidents/escalateStaleIncidents.test.ts (7.288 s)
+ts-jest[config] (WARN) [94mmessage[0m[90m TS151002: [0mUsing hybrid module kind (Node16/18/Next) is only supported in "isolatedModules: true". Please set "isolatedModules: true" in your tsconfig.json. To disable this message, you can set "diagnostics.ignoreCodes" to include 151002 in your ts-jest config. See more at https://kulshekhar.github.io/ts-jest/docs/getting-started/options/diagnostics
+PASS src/triggers.harness.test.ts (9.961 s)
+  ● Console
+
+    console.log
+      dispatchAlerts alert_facility_001: delivered=[in_app,push,sms] retries=0 lang=en
+
+      at func.run (src/alerts/dispatchAlerts.ts:235:15)
+
+    console.log
+      dispatchAlerts alert_grand_horizon: delivered=[in_app,push] retries=0 lang=hi
+
+      at func.run (src/alerts/dispatchAlerts.ts:235:15)
+
+    console.log
+      dispatchAlerts alert_lincoln_high: delivered=[in_app,push,sms] retries=0 lang=ta
+
+      at func.run (src/alerts/dispatchAlerts.ts:235:15)
+
+    console.log
+      dispatchAlerts alert_state_university: delivered=[in_app,push] retries=0 lang=te
+
+      at func.run (src/alerts/dispatchAlerts.ts:235:15)
+
+    console.log
+      dispatchAlerts alert_apex_manufacturing: delivered=[in_app,push,sms] retries=0 lang=mr
+
+      at func.run (src/alerts/dispatchAlerts.ts:235:15)
+
+    console.log
+      escalateStaleIncidents scan=1 promoted=1 meshPublished=0 alerts=1
+
+      at Function.run (src/incidents/escalateStaleIncidents.ts:216:11)
+
+
+Test Suites: 3 passed, 3 total
+Tests:       23 passed, 23 total
+Snapshots:   0 total
+Time:        11.388 s, estimated 14 s
+Ran all test suites.

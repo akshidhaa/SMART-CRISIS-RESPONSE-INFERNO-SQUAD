@@ -1,0 +1,21 @@
+{
+  "projects": {
+    "default": "scr-mesh-dev",
+    "production": "scr-mesh-prod",
+    "staging": "scr-mesh-staging"
+  },
+  "targets": {
+    "scr-mesh-prod": {
+      "hosting": {
+        "admin": ["scr-mesh-admin"],
+        "public": ["scr-mesh-public"]
+      }
+    },
+    "scr-mesh-staging": {
+      "hosting": {
+        "admin": ["scr-mesh-staging-admin"],
+        "public": ["scr-mesh-staging-public"]
+      }
+    }
+  }
+}

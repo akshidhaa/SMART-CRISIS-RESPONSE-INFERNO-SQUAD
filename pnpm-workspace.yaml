@@ -1,0 +1,7 @@
+packages:
+  - 'apps/*'
+  - 'services/gemini-orchestrator'
+  - 'services/mesh-coordinator'
+  - 'firebase/functions'
+  - 'firebase/tests'
+  - 'shared/*'

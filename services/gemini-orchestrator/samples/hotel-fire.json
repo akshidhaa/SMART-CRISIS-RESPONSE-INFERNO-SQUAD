@@ -1,0 +1,34 @@
+{
+  "severity": "high",
+  "refinedSummary": "Fire detected in the kitchen area of Grand Horizon Hotel, Floor 1. Initial report from front desk staff indicates smoke visible in the corridor. Kitchen ventilation may be spreading smoke to guest floors. Hotel occupancy is high — 142 guests registered. Evacuation of floors 1-3 recommended while fire suppression is attempted.",
+  "multiLanguageSummaries": {
+    "en": "FIRE in hotel kitchen, Floor 1. Smoke spreading to corridors. Evacuating floors 1-3.",
+    "hi": "होटल किचन में आग, मंजिल 1। धुआँ गलियारों में फैल रहा है। मंजिल 1-3 खाली की जा रही है।",
+    "ta": "ஹோட்டல் சமையலறையில் தீ, தளம் 1. புகை பரவுகிறது. தளங்கள் 1-3 காலி செய்யப்படுகிறது.",
+    "te": "హోటల్ కిచెన్‌లో అగ్నిప్రమాదం, ఫ్లోర్ 1. పొగ వ్యాపిస్తోంది. ఫ్లోర్ 1-3 ఖాళీ చేయబడుతోంది.",
+    "mr": "हॉटेल किचनमध्ये आग, मजला 1. धूर कॉरिडॉरमध्ये पसरत आहे. मजला 1-3 रिकामा केला जात आहे.",
+    "bn": "হোটেল রান্নাঘরে আগুন, তলা ১। ধোঁয়া ছড়াচ্ছে। তলা ১-৩ খালি করা হচ্ছে।"
+  },
+  "suggestedProtocolDeltas": [
+    "Verify kitchen gas lines are shut off at the mains",
+    "Deploy multilingual PA announcements for international guests",
+    "Assign staff to assist mobility-impaired guests on upper floors",
+    "Contact hotel insurance provider for incident documentation"
+  ],
+  "recommendedRoles": ["front_desk", "security", "housekeeping", "manager"],
+  "estimatedResponseMinutes": 25,
+  "meshEventRecommendations": [
+    {
+      "type": "PREPARE_TRAUMA_TEAMS",
+      "target": "hospital",
+      "radiusKm": 5,
+      "reason": "Hotel fire with 142 guests — nearby hospitals should prepare for potential burn victims and smoke inhalation cases."
+    },
+    {
+      "type": "TRAFFIC_DIVERSION",
+      "target": "hospital",
+      "radiusKm": 2,
+      "reason": "Fire trucks will block main hotel access road — divert traffic for emergency vehicle access."
+    }
+  ]
+}

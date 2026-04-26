@@ -1,0 +1,63 @@
+==============================================================================
+SCR-Mesh | services/ai-detection | Phase 2.2 demo timeline
+==============================================================================
+
+>> hospital_intruder  [hospital @ Main Entrance, floor 1]
+  camera     : demo_hospital_intruder
+  timestamp  : 2026-04-19T02:15:00+00:00
+  detections : 1
+    - intruder_after_hours     person(0.85)
+  anomalies  : 1
+    ! [HIGH    ] intruder_after_hours -> intruder
+      After-hours person(s) detected in Main Entrance at 2026-04-19T02:15:00+00:00 (1 person(s)).
+
+>> hotel_robbery  [hotel @ Lobby, floor G]
+  camera     : demo_hotel_robbery
+  timestamp  : 2026-04-19T23:45:00+00:00
+  detections : 2
+    - weapon                   weapon(0.78)
+    - intruder_after_hours     person(0.85)
+  anomalies  : 2
+    ! [CRITICAL] weapon -> weapon_sighting
+      Weapon visually detected in Lobby (floor G) — 1 candidate(s) at hotel facility.
+    ! [HIGH    ] intruder_after_hours -> intruder
+      After-hours person(s) detected in Lobby at 2026-04-19T23:45:00+00:00 (1 person(s)).
+
+>> school_weapon  [school @ Hallway B, floor 2]
+  camera     : demo_school_weapon
+  timestamp  : 2026-04-19T10:30:00+00:00
+  detections : 1
+    - weapon                   weapon(0.78)
+  anomalies  : 1
+    ! [CRITICAL] weapon -> weapon_sighting
+      Weapon visually detected in Hallway B (floor 2) — 1 candidate(s) at school facility.
+
+>> college_protest_surge  [college @ Quad, floor Outdoor]
+  camera     : demo_college_protest_surge
+  timestamp  : 2026-04-19T14:00:00+00:00
+  detections : 8
+    - crowd_surge              person(0.85), person(0.85), person(0.85), person(0.85), person(0.85), person(0.85), person(0.85), person(0.85)
+  anomalies  : 1
+    ! [HIGH    ] crowd_surge -> crowd_surge
+      Crowd density in Quad reached 8 persons (threshold 6).
+
+>> factory_ppe_missing  [factory @ Assembly Line 3, floor 1]
+  camera     : demo_factory_ppe_missing
+  timestamp  : 2026-04-19T11:00:00+00:00
+  detections : 2
+    - ppe_violation            missing_vest(0.74), missing_helmet_vest(0.74)
+  anomalies  : 1
+    ! [MEDIUM  ] ppe_violation -> ppe_violation
+      2 worker(s) in Assembly Line 3 not fully PPE-compliant — 2 missing vest, 1 missing helmet.
+
+>> factory_chemical_spill  [factory @ Chem Storage, floor 1]
+  camera     : demo_factory_chemical_spill
+  timestamp  : 2026-04-19T08:30:00+00:00
+  detections : 2
+    - chemical_spill_visual    liquid_pool(0.68), liquid_pool(0.68)
+  anomalies  : 1
+    ! [CRITICAL] chemical_spill_visual -> chemical_spill
+      Large liquid pool (~40400 px²) detected on floor in Chem Storage, floor 1.
+
+==============================================================================
+6 scenarios run · 7 anomalies fired

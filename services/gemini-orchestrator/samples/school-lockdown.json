@@ -1,0 +1,40 @@
+{
+  "severity": "critical",
+  "refinedSummary": "Active intruder reported at Lincoln High School, Main Hall, Floor 1. Teacher triggered the alert after observing an unauthorized individual attempting to enter classrooms. 850 students currently on campus. Immediate lockdown of all buildings required. Law enforcement has been contacted. Priority is securing classroom doors and accounting for all students.",
+  "multiLanguageSummaries": {
+    "en": "LOCKDOWN: Intruder at Lincoln High, Main Hall. All classrooms locked. Law enforcement en route.",
+    "hi": "लॉकडाउन: लिंकन हाई में घुसपैठिया। सभी कक्षाएँ बंद। पुलिस रास्ते में।",
+    "ta": "லாக்டவுன்: லிங்கன் பள்ளியில் ஊடுருவி. அனைத்து வகுப்பறைகளும் பூட்டப்பட்டன.",
+    "te": "లాక్‌డౌన్: లింకన్ హైలో చొరబాటుదారుడు. అన్ని తరగతి గదులు లాక్. పోలీసులు వస్తున్నారు.",
+    "mr": "लॉकडाउन: लिंकन हायमध्ये घुसखोर. सर्व वर्गखोल्या बंद. पोलीस मार्गावर.",
+    "bn": "লকডাউন: লিংকন হাইতে অনুপ্রবেশকারী। সব শ্রেণীকক্ষ বন্ধ। পুলিশ আসছে।"
+  },
+  "suggestedProtocolDeltas": [
+    "Activate silent alarm to avoid escalating the intruder",
+    "Teachers should barricade doors with furniture, not just lock them",
+    "Designate a parent reunification point at the north parking lot",
+    "School counselors should prepare for post-incident trauma support"
+  ],
+  "recommendedRoles": ["teacher", "principal", "security", "counselor"],
+  "estimatedResponseMinutes": 15,
+  "meshEventRecommendations": [
+    {
+      "type": "LOCKDOWN_NEARBY",
+      "target": "school",
+      "radiusKm": 3,
+      "reason": "Active intruder near school campus — neighboring schools and colleges should lock down as a precaution."
+    },
+    {
+      "type": "PREPARE_TRAUMA_TEAMS",
+      "target": "hospital",
+      "radiusKm": 5,
+      "reason": "Active threat situation with 850 students — hospitals should prepare trauma capacity."
+    },
+    {
+      "type": "TRAFFIC_DIVERSION",
+      "target": "school",
+      "radiusKm": 1,
+      "reason": "Law enforcement perimeter being established — divert all traffic away from school zone."
+    }
+  ]
+}

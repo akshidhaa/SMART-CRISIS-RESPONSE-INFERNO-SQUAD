@@ -1,0 +1,47 @@
+{
+  "severity": "critical",
+  "refinedSummary": "Chemical spill reported at Apex Manufacturing, Production Floor, Floor 1. Hydrochloric acid leak from a ruptured storage tank in Zone B. Spill estimated at 200 liters and spreading toward drainage. 45 workers in the immediate area. Wind direction is southeast — downwind facilities include a residential school 1.2km away. Full hazmat protocol required. Environmental authority notification mandatory within 30 minutes.",
+  "multiLanguageSummaries": {
+    "en": "CHEMICAL SPILL: HCl acid leak at Apex factory, Zone B. 200L spill. Evacuate downwind. Hazmat deployed.",
+    "hi": "रासायनिक रिसाव: एपेक्स फैक्ट्री ज़ोन B में HCl एसिड लीक। 200L। हवा की दिशा में खाली करें।",
+    "ta": "ரசாயன கசிவு: ஏபெக்ஸ் ஆலை B மண்டலத்தில் HCl அமிலம் கசிவு. 200L. காற்றின் திசையில் வெளியேறுக.",
+    "te": "రసాయన చిందటం: ఏపెక్స్ ఫ్యాక్టరీ జోన్ B లో HCl ఆమ్లం లీక్. 200L. గాలి దిశలో ఖాళీ చేయండి.",
+    "mr": "रासायनिक गळती: एपेक्स कारखाना झोन B मध्ये HCl ॲसिड गळती. 200L. वाऱ्याच्या दिशेने रिकामे करा.",
+    "bn": "রাসায়নিক ছড়িয়ে পড়া: এপেক্স কারখানা জোন B-তে HCl অ্যাসিড লিক। 200L। বাতাসের দিকে সরিয়ে নিন।"
+  },
+  "suggestedProtocolDeltas": [
+    "Deploy portable wind direction indicators to track fume spread",
+    "Activate on-site emergency shower and eyewash stations in Zone B",
+    "Set up an air quality monitoring perimeter at 500m radius",
+    "Contact HAZMAT disposal contractor for containment and cleanup",
+    "Prepare material safety data sheet (MSDS) for first responders"
+  ],
+  "recommendedRoles": ["safety_officer", "plant_manager", "supervisor", "operator"],
+  "estimatedResponseMinutes": 45,
+  "meshEventRecommendations": [
+    {
+      "type": "EVACUATE_DOWNWIND",
+      "target": "school",
+      "radiusKm": 3,
+      "reason": "Hydrochloric acid fumes drifting southeast — school 1.2km downwind must evacuate immediately."
+    },
+    {
+      "type": "EVACUATE_DOWNWIND",
+      "target": "hotel",
+      "radiusKm": 3,
+      "reason": "HCl fumes spreading downwind — hotels in the zone should evacuate guests and seal HVAC systems."
+    },
+    {
+      "type": "PREPARE_TRAUMA_TEAMS",
+      "target": "hospital",
+      "radiusKm": 10,
+      "reason": "Chemical burn and inhalation casualties expected — hospitals prepare decontamination and burn units."
+    },
+    {
+      "type": "TRAFFIC_DIVERSION",
+      "target": "factory",
+      "radiusKm": 2,
+      "reason": "Hazmat perimeter — all vehicular traffic must be diverted away from the factory zone."
+    }
+  ]
+}

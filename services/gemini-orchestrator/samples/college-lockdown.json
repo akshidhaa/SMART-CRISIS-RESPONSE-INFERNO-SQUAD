@@ -1,0 +1,34 @@
+{
+  "severity": "high",
+  "refinedSummary": "Campus unrest reported at State University, Student Center, Floor 2. Large crowd gathering has turned violent with reports of property damage. Hostel blocks A and C are closest to the disturbance. 3,200 students on campus. Campus security is outnumbered and requesting backup. Lockdown of academic buildings recommended while hostel wardens secure residential blocks.",
+  "multiLanguageSummaries": {
+    "en": "UNREST at State University Student Center. Violent crowd, property damage. Campus lockdown initiated.",
+    "hi": "राज्य विश्वविद्यालय में अशांति। हिंसक भीड़, संपत्ति को नुकसान। कैंपस लॉकडाउन शुरू।",
+    "ta": "மாநிலப் பல்கலையில் கலவரம். வன்முறைக் கூட்டம். வளாக லாக்டவுன் தொடங்கியது.",
+    "te": "స్టేట్ యూనివర్సిటీలో అశాంతి. హింసాత్మక గుంపు. క్యాంపస్ లాక్‌డౌన్ ప్రారంభమైంది.",
+    "mr": "राज्य विद्यापीठात अशांतता. हिंसक जमाव. कॅम्पस लॉकडाउन सुरू.",
+    "bn": "রাজ্য বিশ্ববিদ্যালয়ে অশান্তি। হিংসাত্মক জনতা। ক্যাম্পাস লকডাউন শুরু।"
+  },
+  "suggestedProtocolDeltas": [
+    "Deploy campus CCTV monitoring team to track crowd movement in real-time",
+    "Secure laboratory buildings containing hazardous materials",
+    "Activate emergency SMS broadcast to all registered student numbers",
+    "Coordinate with local police for a measured response to avoid escalation"
+  ],
+  "recommendedRoles": ["dean", "professor", "warden", "security"],
+  "estimatedResponseMinutes": 35,
+  "meshEventRecommendations": [
+    {
+      "type": "LOCKDOWN_NEARBY",
+      "target": "school",
+      "radiusKm": 2,
+      "reason": "Violent campus unrest — nearby schools should lockdown as a precaution until situation is contained."
+    },
+    {
+      "type": "SHELTER_REQUEST",
+      "target": "hotel",
+      "radiusKm": 5,
+      "reason": "Students displaced from hostels near disturbance may need temporary shelter."
+    }
+  ]
+}

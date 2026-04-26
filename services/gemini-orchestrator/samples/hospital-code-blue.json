@@ -1,0 +1,27 @@
+{
+  "severity": "critical",
+  "refinedSummary": "Cardiac arrest reported in ICU Ward B, Floor 3. Patient unresponsive, no pulse detected by attending nurse. Code Blue team activation required immediately. Crash cart and defibrillator needed at bedside. Given ICU setting, rapid response is feasible — nearby staff and equipment are available within the zone.",
+  "multiLanguageSummaries": {
+    "en": "CRITICAL: Cardiac arrest in ICU Ward B, Floor 3. Code Blue activated. Crash cart en route.",
+    "hi": "गंभीर: ICU वार्ड B, मंजिल 3 में कार्डियक अरेस्ट। कोड ब्लू सक्रिय। क्रैश कार्ट भेजा जा रहा है।",
+    "ta": "அவசரம்: ICU வார்டு B, தளம் 3-ல் இதயத் தடை. கோட் ப்ளூ செயல்படுத்தப்பட்டது.",
+    "te": "క్రిటికల్: ICU వార్డ్ B, ఫ్లోర్ 3లో కార్డియాక్ అరెస్ట్. కోడ్ బ్లూ యాక్టివేట్.",
+    "mr": "गंभीर: ICU वॉर्ड B, मजला 3 मध्ये ह्रदयविकाराचा झटका. कोड ब्लू सक्रिय.",
+    "bn": "জরুরি: ICU ওয়ার্ড B, তলা 3-এ কার্ডিয়াক অ্যারেস্ট। কোড ব্লু সক্রিয়।"
+  },
+  "suggestedProtocolDeltas": [
+    "Alert blood bank for potential transfusion standby",
+    "Prepare ventilator in case of prolonged resuscitation",
+    "Assign a runner to relay updates to family waiting area"
+  ],
+  "recommendedRoles": ["doctor", "nurse", "paramedic", "admin_staff"],
+  "estimatedResponseMinutes": 8,
+  "meshEventRecommendations": [
+    {
+      "type": "BLOOD_DONATION_NEEDED",
+      "target": "college",
+      "radiusKm": 10,
+      "reason": "Cardiac arrest may require emergency transfusion — alert nearby colleges for potential blood donors."
+    }
+  ]
+}

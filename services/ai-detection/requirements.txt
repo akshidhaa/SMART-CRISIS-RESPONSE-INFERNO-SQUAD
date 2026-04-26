@@ -1,0 +1,11 @@
+fastapi>=0.110
+uvicorn[standard]>=0.27
+python-multipart>=0.0.9
+Pillow>=10.0
+numpy>=1.26
+opencv-python-headless>=4.9
+requests>=2.31
+google-auth>=2.29
+# Heavy optional — base + specialized YOLO models. The detectors degrade to
+# deterministic heuristics if ultralytics or its weights aren't available.
+ultralytics>=8.2

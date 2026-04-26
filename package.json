@@ -1,0 +1,22 @@
+{
+  "name": "scr-mesh",
+  "version": "0.1.0",
+  "private": true,
+  "description": "Smart Crisis Response Mesh — unified crisis coordination across hospitals, hotels, schools, colleges, and factories.",
+  "scripts": {
+    "dev:admin": "pnpm --filter web-admin dev",
+    "dev:public": "pnpm --filter web-public dev",
+    "build": "pnpm -r build",
+    "lint": "pnpm -r lint",
+    "seed:demo": "tsx --env-file apps/web-admin/.env.local scripts/seed-demo.ts",
+    "demo:scenarios": "tsx --env-file apps/web-admin/.env.local scripts/trigger-demo-scenarios.ts",
+    "demo:finale": "tsx --env-file apps/web-admin/.env.local scripts/trigger-demo-scenarios.ts --scenario=finale"
+  },
+  "packageManager": "pnpm@9.0.0",
+  "engines": {
+    "node": ">=20"
+  },
+  "devDependencies": {
+    "tsx": "^4.21.0"
+  }
+}
