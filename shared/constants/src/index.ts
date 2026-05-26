@@ -251,6 +251,8 @@ export interface FacilityTheme {
   ring: string;
   /** Subtle band color used by sidebar headers / facility chips. */
   bandClass: string;
+  /** Hex color for map markers. */
+  accentHex: string;
 }
 
 export const FACILITY_THEME: Record<FacilityType, FacilityTheme> = {
@@ -263,6 +265,7 @@ export const FACILITY_THEME: Record<FacilityType, FacilityTheme> = {
     accentForeground: '0 0% 100%',
     ring: '0 84% 50%',
     bandClass: 'bg-red-50 dark:bg-red-950/40 text-red-900 dark:text-red-100',
+    accentHex: '#e53e3e',
   },
   hotel: {
     label: 'Hotel',
@@ -273,6 +276,7 @@ export const FACILITY_THEME: Record<FacilityType, FacilityTheme> = {
     accentForeground: '0 0% 0%',
     ring: '38 92% 50%',
     bandClass: 'bg-amber-50 dark:bg-amber-950/40 text-amber-900 dark:text-amber-100',
+    accentHex: '#f6ad55',
   },
   school: {
     label: 'School',
@@ -283,6 +287,7 @@ export const FACILITY_THEME: Record<FacilityType, FacilityTheme> = {
     accentForeground: '0 0% 100%',
     ring: '221 83% 53%',
     bandClass: 'bg-blue-50 dark:bg-blue-950/40 text-blue-900 dark:text-blue-100',
+    accentHex: '#3b82f6',
   },
   college: {
     label: 'College',
@@ -293,6 +298,7 @@ export const FACILITY_THEME: Record<FacilityType, FacilityTheme> = {
     accentForeground: '0 0% 100%',
     ring: '262 83% 58%',
     bandClass: 'bg-purple-50 dark:bg-purple-950/40 text-purple-900 dark:text-purple-100',
+    accentHex: '#805ad5',
   },
   factory: {
     label: 'Factory',
@@ -303,6 +309,7 @@ export const FACILITY_THEME: Record<FacilityType, FacilityTheme> = {
     accentForeground: '0 0% 0%',
     ring: '48 96% 53%',
     bandClass: 'bg-yellow-50 dark:bg-yellow-900/40 text-yellow-900 dark:text-yellow-100',
+    accentHex: '#facc15',
   },
 };
 

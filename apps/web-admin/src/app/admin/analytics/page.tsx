@@ -13,17 +13,36 @@ import type { Incident, MeshEvent } from '@scr-mesh/types';
 
 const HISTORY_DAYS = 14;
 
+type AnalyticsIncidentRow = Incident & {
+  id: string;
+  createdAtMs: number;
+  reportedAtMs: number;
+};
+
+type AnalyticsMeshEventRow = MeshEvent & {
+  id: string;
+  publishedAtMs: number;
+};
+
 export default function AnalyticsPage() {
   const { currentFacilityId } = useAuth();
-  const [incidents, setIncidents] = useState<(Incident & { id: string })[]>([]);
-  const [meshIn, setMeshIn] = useState<(MeshEvent & { id: string })[]>([]);
-  const [meshOut, setMeshOut] = useState<(MeshEvent & { id: string })[]>([]);
+  const [incidents, setIncidents] = useState<AnalyticsIncidentRow[]>([]);
+  const [meshIn, setMeshIn] = useState<AnalyticsMeshEventRow[]>([]);
+  const [meshOut, setMeshOut] = useState<AnalyticsMeshEventRow[]>([]);
 
   useEffect(() => {
     if (!currentFacilityId) return;
     return onSnapshot(
       query(collection(db, 'incidents'), where('facilityId', '==', currentFacilityId)),
-      (snap) => setIncidents(snap.docs.map((d) => ({ id: d.id, ...(d.data() as Incident) }))),
+      (snap) => setIncidents(snap.docs.map((d) => {
+        const data = d.data() as Incident;
+        return {
+          id: d.id,
+          ...data,
+          createdAtMs: toMillis(data.createdAt),
+          reportedAtMs: data.reportedAtMs ?? toMillis(data.createdAt),
+        };
+      })),
     );
   }, [currentFacilityId]);
 
@@ -31,7 +50,10 @@ export default function AnalyticsPage() {
     if (!currentFacilityId) return;
     return onSnapshot(
       query(collection(db, 'meshEvents'), where('affectedFacilityIds', 'array-contains', currentFacilityId)),
-      (snap) => setMeshIn(snap.docs.map((d) => ({ id: d.id, ...(d.data() as MeshEvent) }))),
+      (snap) => setMeshIn(snap.docs.map((d) => {
+        const data = d.data() as MeshEvent;
+        return { id: d.id, ...data, publishedAtMs: toMillis(data.publishedAt) };
+      })),
     );
   }, [currentFacilityId]);
 
@@ -39,20 +61,23 @@ export default function AnalyticsPage() {
     if (!currentFacilityId) return;
     return onSnapshot(
       query(collection(db, 'meshEvents'), where('sourceFacilityId', '==', currentFacilityId)),
-      (snap) => setMeshOut(snap.docs.map((d) => ({ id: d.id, ...(d.data() as MeshEvent) }))),
+      (snap) => setMeshOut(snap.docs.map((d) => {
+        const data = d.data() as MeshEvent;
+        return { id: d.id, ...data, publishedAtMs: toMillis(data.publishedAt) };
+      })),
     );
   }, [currentFacilityId]);
 
   // Aggregations
   const incidentHistory = useMemo(
-    () => bucketByDay(incidents.map((i) => toMillis(i.createdAt)), HISTORY_DAYS),
+    () => bucketByDay(incidents.map((i) => i.createdAtMs), HISTORY_DAYS),
     [incidents],
   );
 
   const meshHistory = useMemo(
     () => ({
-      received: bucketByDay(meshIn.map((m) => toMillis(m.publishedAt)), HISTORY_DAYS),
-      published: bucketByDay(meshOut.map((m) => toMillis(m.publishedAt)), HISTORY_DAYS),
+      received: bucketByDay(meshIn.map((m) => m.publishedAtMs), HISTORY_DAYS),
+      published: bucketByDay(meshOut.map((m) => m.publishedAtMs), HISTORY_DAYS),
     }),
     [meshIn, meshOut],
   );

@@ -1,13 +1,5 @@
 'use client';
 
-// Auth context = Firebase user + the Firestore `users/{uid}` profile + the
-// currently-selected facility. `useAuth()` is the only hook the rest of
-// the app should need.
-//
-// `currentFacilityId` is persisted to localStorage so tab reloads and
-// FacilitySwitcher selections survive — if the stored id is no longer in
-// the user's facilityIds, we fall back to the first entry.
-
 import {
   createContext,
   useCallback,
@@ -46,54 +38,75 @@ export function AuthProvider({ children }: { children: ReactNode }) {
 
   useEffect(() => {
     const stored =
-      typeof window !== 'undefined' ? window.localStorage.getItem(STORAGE_KEY) : null;
+      typeof window !== 'undefined'
+        ? window.localStorage.getItem(STORAGE_KEY)
+        : null;
+
     if (stored) setCurrentFacilityIdState(stored);
   }, []);
 
   useEffect(() => {
     const unsubAuth = onAuthStateChanged(auth, (next) => {
-      setUser(next);
-      if (!next) {
-        setProfile(null);
+      if (next) {
+        setUser(next);
+      } else {
+        // DEMO MODE
+        setUser({ uid: 'demo-user', email: 'demo@example.com' } as FirebaseUser);
+
+setProfile({
+  email: 'demo@example.com',
+  displayName: 'Demo Admin',
+  role: 'admin',
+  facilityIds: ['demo_hospital', 'demo_hotel', 'demo_school'],
+  createdAt: new Date() as any,
+  updatedAt: new Date() as any,
+} as any);
+        setCurrentFacilityIdState('demo_hospital');
         setLoading(false);
       }
     });
+
     return unsubAuth;
   }, []);
 
   useEffect(() => {
     if (!user) return;
+
+    if (user.uid === 'demo-user') {
+      return;
+    }
+
     setLoading(true);
-    console.log('[AuthProvider] Reading profile for uid:', user.uid);
+
     const ref = doc(db, 'users', user.uid);
+
     const unsub = onSnapshot(
       ref,
       (snap) => {
         if (snap.exists()) {
           const data = snap.data() as User;
-          console.log('[AuthProvider] Profile loaded:', { role: data.role, facilityIds: data.facilityIds });
           setProfile(data);
         } else {
-          console.warn('[AuthProvider] No user doc found at users/' + user.uid);
           setProfile(null);
         }
         setLoading(false);
       },
-      (err) => {
-        console.error('[AuthProvider] Firestore read FAILED:', err.code, err.message);
+      () => {
         setLoading(false);
-      },
+      }
     );
+
     return unsub;
   }, [user]);
 
-  // Keep `currentFacilityId` valid whenever the profile changes.
   useEffect(() => {
     const ids = profile?.facilityIds ?? [];
+
     if (ids.length === 0) {
       setCurrentFacilityIdState(null);
       return;
     }
+
     if (!currentFacilityId || !ids.includes(currentFacilityId)) {
       setCurrentFacilityIdState(ids[0]);
     }
@@ -101,6 +114,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
 
   const setCurrentFacilityId = useCallback((facilityId: string) => {
     setCurrentFacilityIdState(facilityId);
+
     if (typeof window !== 'undefined') {
       window.localStorage.setItem(STORAGE_KEY, facilityId);
     }
@@ -117,16 +131,22 @@ export function AuthProvider({ children }: { children: ReactNode }) {
       loading,
       setCurrentFacilityId,
     }),
-    [user, profile, currentFacilityId, loading, setCurrentFacilityId],
+    [user, profile, currentFacilityId, loading, setCurrentFacilityId]
   );
 
-  return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>;
+  return (
+    <AuthContext.Provider value={value}>
+      {children}
+    </AuthContext.Provider>
+  );
 }
 
 export function useAuth(): AuthContextValue {
   const ctx = useContext(AuthContext);
+
   if (!ctx) {
     throw new Error('useAuth must be used inside <AuthProvider>.');
   }
+
   return ctx;
 }

@@ -17,7 +17,7 @@ export default function CheckInPage() {
           </div>
           <h2 className="text-2xl font-bold text-white mb-4">I am safe</h2>
           <p className="text-sm text-muted-foreground mb-10 max-w-sm mx-auto">
-            Broadcasting a "Safe" status will update your neighborhood status and notify emergency contacts.
+            Broadcasting a &quot;Safe&quot; status will update your neighborhood status and notify emergency contacts.
           </p>
           <button className="w-full max-w-xs rounded-2xl bg-emerald-500 py-4 text-sm font-black uppercase text-white shadow-xl shadow-emerald-500/20 transition-transform active:scale-95">
             Broadcast Safety Status

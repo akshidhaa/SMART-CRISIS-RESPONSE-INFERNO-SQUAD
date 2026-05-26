@@ -109,6 +109,12 @@ export interface Facility {
   createdAt: Timestamp;
 }
 
+export interface FacilityNode {
+  id: string;
+  data: Facility;
+  position: { lat: number; lng: number };
+}
+
 // ---------------------------------------------------------------------------
 // 2. users/{userId}
 // ---------------------------------------------------------------------------
@@ -148,6 +154,7 @@ export interface Incident {
   assignedStaff: UserId[];
   meshEventsFired: MeshEventId[];
   createdAt: Timestamp;
+  reportedAtMs?: number;
   acknowledgedAt?: Timestamp;
   resolvedAt?: Timestamp;
   /** True when incident was auto-created by services/ai-detection from a
@@ -277,3 +284,10 @@ export const USER_ROLES: readonly UserRole[] = [
   'community',
   'common',
 ] as const;
+
+// ---------------------------------------------------------------------------
+// Row types for Firestore queries (with document ID)
+// ---------------------------------------------------------------------------
+
+export type MeshEventRow = MeshEvent & { id: string; publishedAtMs: number };
+export type IncidentRow = Incident & { id: string; createdAtMs: number; reportedAtMs: number };

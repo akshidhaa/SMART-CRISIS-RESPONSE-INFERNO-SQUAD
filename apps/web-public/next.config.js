@@ -1,6 +1,6 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
-  output: 'standalone',
+  output: process.platform === 'win32' ? undefined : 'standalone',
   transpilePackages: ["@scr-mesh/types", "@scr-mesh/constants"],
 };
 
