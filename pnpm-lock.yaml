@@ -17,6 +17,9 @@ importers:
       '@radix-ui/react-slot':
         specifier: ^1.2.4
         version: 1.2.4(@types/react@18.3.28)(react@18.2.0)
+      '@react-google-maps/api':
+        specifier: ^2.20.8
+        version: 2.20.8(react-dom@18.2.0(react@18.2.0))(react@18.2.0)
       class-variance-authority:
         specifier: ^0.7.1
         version: 0.7.1
@@ -7075,6 +7078,17 @@ snapshots:
       react: 18.2.0
     optionalDependencies:
       '@types/react': 18.3.28
+
+  '@react-google-maps/api@2.20.8(react-dom@18.2.0(react@18.2.0))(react@18.2.0)':
+    dependencies:
+      '@googlemaps/js-api-loader': 1.16.8
+      '@googlemaps/markerclusterer': 2.5.3
+      '@react-google-maps/infobox': 2.20.0
+      '@react-google-maps/marker-clusterer': 2.20.0
+      '@types/google.maps': 3.58.1
+      invariant: 2.2.4
+      react: 18.2.0
+      react-dom: 18.2.0(react@18.2.0)
 
   '@react-google-maps/api@2.20.8(react-dom@18.3.1(react@18.3.1))(react@18.3.1)':
     dependencies:
