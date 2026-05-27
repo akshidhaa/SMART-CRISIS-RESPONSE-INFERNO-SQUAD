@@ -36,7 +36,7 @@ export async function signUp(input: SignUpInput): Promise<UserCredential> {
     await setDoc(doc(db, 'users', cred.user.uid), {
       email: input.email,
       displayName: input.displayName || '',
-      role: 'admin',
+      role: 'community',
       facilityIds: [
         'city_gen_hosp',
         'grand_horizon',
