@@ -244,6 +244,12 @@ export default function RootPage() {
   // Authenticated users -> Keep on landing page to allow choice
   // (Previously redirected automatically, now allowing manual navigation)
   useEffect(() => {
+  if (loading) return;
+  if (!user) return;
+  if (role === 'admin') router.replace('/admin/overview');
+  else if (role === 'community') router.replace('/community/home');
+}, [user, role, loading, router]);
+  useEffect(() => {
     // Redirect logic removed to ensure landing page is always visible first
   }, []);
 

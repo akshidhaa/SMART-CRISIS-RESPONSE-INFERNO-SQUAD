@@ -21,11 +21,11 @@ export default function LoginPage() {
     setError(null);
     try {
       if (mode === 'signIn') {
-        await signIn(email, password);
-      } else {
-        await signUp({ email, password, displayName });
-      }
-      router.replace('/');
+  await signIn(email, password);
+} else {
+  await signUp({ email, password, displayName });
+}
+router.replace('/');
     } catch (err) {
       const message =
         err instanceof FirebaseError ? err.message : 'Authentication failed.';
