@@ -14,14 +14,23 @@ importers:
 
   apps/web-admin:
     dependencies:
-      '@radix-ui/react-slot':
-        specifier: ^1.2.4
-        version: 1.2.4(@types/react@18.3.28)(react@18.2.0)
       '@react-google-maps/api':
         specifier: ^2.20.8
-        version: 2.20.8(react-dom@18.2.0(react@18.2.0))(react@18.2.0)
+        version: 2.20.8(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
+      '@scr-mesh/constants':
+        specifier: workspace:*
+        version: link:../../shared/constants
+      '@scr-mesh/playbooks':
+        specifier: workspace:*
+        version: link:../../shared/playbooks
+      '@scr-mesh/types':
+        specifier: workspace:*
+        version: link:../../shared/types
+      autoprefixer:
+        specifier: ^10.4.0
+        version: 10.5.0(postcss@8.5.9)
       class-variance-authority:
-        specifier: ^0.7.1
+        specifier: ^0.7.0
         version: 0.7.1
       clsx:
         specifier: ^2.1.0
@@ -30,30 +39,51 @@ importers:
         specifier: ^10.12.0
         version: 10.14.1
       framer-motion:
-        specifier: ^12.40.0
-        version: 12.40.0(react-dom@18.2.0(react@18.2.0))(react@18.2.0)
+        specifier: ^12.38.0
+        version: 12.40.0(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
       lucide-react:
         specifier: ^0.370.0
-        version: 0.370.0(react@18.2.0)
+        version: 0.370.0(react@18.3.1)
       next:
-        specifier: 14.2.35
-        version: 14.2.35(@opentelemetry/api@1.9.1)(react-dom@18.2.0(react@18.2.0))(react@18.2.0)
+        specifier: ^14.2.0
+        version: 14.2.35(@opentelemetry/api@1.9.1)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
+      postcss:
+        specifier: ^8.4.0
+        version: 8.5.9
       react:
-        specifier: 18.2.0
-        version: 18.2.0
+        specifier: ^18.3.0
+        version: 18.3.1
       react-dom:
-        specifier: 18.2.0
-        version: 18.2.0(react@18.2.0)
+        specifier: ^18.3.0
+        version: 18.3.1(react@18.3.1)
       tailwind-merge:
         specifier: ^2.3.0
         version: 2.6.1
+      tailwindcss:
+        specifier: ^3.4.0
+        version: 3.4.19(tsx@4.21.0)(yaml@2.8.3)
+      tailwindcss-animate:
+        specifier: ^1.0.7
+        version: 1.0.7(tailwindcss@3.4.19(tsx@4.21.0)(yaml@2.8.3))
+      typescript:
+        specifier: ^5.4.0
+        version: 5.9.3
     devDependencies:
+      '@types/node':
+        specifier: ^20.12.0
+        version: 20.19.39
       '@types/react':
-        specifier: ^18.3.28
+        specifier: ^18.3.0
         version: 18.3.28
       '@types/react-dom':
-        specifier: ^18.3.7
+        specifier: ^18.3.0
         version: 18.3.7(@types/react@18.3.28)
+      eslint:
+        specifier: ^8.57.0
+        version: 8.57.1
+      eslint-config-next:
+        specifier: ^14.2.0
+        version: 14.2.35(eslint@8.57.1)(typescript@5.9.3)
 
   apps/web-public:
     dependencies:
@@ -1365,24 +1395,6 @@ packages:
 
   '@protobufjs/utf8@1.1.0':
     resolution: {integrity: sha512-Vvn3zZrhQZkkBE8LSuW3em98c0FwgO4nxzv6OdSxPKJIEKY2bGbHn+mhGIPerzI4twdxaP8/0+06HBpwf345Lw==}
-
-  '@radix-ui/react-compose-refs@1.1.2':
-    resolution: {integrity: sha512-z4eqJvfiNnFMHIIvXP3CY57y2WJs5g2v3X0zm9mEJkrkNv4rDxu+sg9Jh8EkXyeqBkB7SOcboo9dMVqhyrACIg==}
-    peerDependencies:
-      '@types/react': '*'
-      react: ^16.8 || ^17.0 || ^18.0 || ^19.0 || ^19.0.0-rc
-    peerDependenciesMeta:
-      '@types/react':
-        optional: true
-
-  '@radix-ui/react-slot@1.2.4':
-    resolution: {integrity: sha512-Jl+bCv8HxKnlTLVrcDE8zTMJ09R9/ukw4qBs/oZClOfoQk/cOTbDn+NceXfV7j09YPVQUryJPHurafcSg6EVKA==}
-    peerDependencies:
-      '@types/react': '*'
-      react: ^16.8 || ^17.0 || ^18.0 || ^19.0 || ^19.0.0-rc
-    peerDependenciesMeta:
-      '@types/react':
-        optional: true
 
   '@react-google-maps/api@2.20.8':
     resolution: {integrity: sha512-wtLYFtCGXK3qbIz1H5to3JxbosPnKsvjDKhqGylXUb859EskhzR7OpuNt0LqdLarXUtZCJTKzPn3BNaekNIahg==}
@@ -4859,11 +4871,6 @@ packages:
   re2@1.24.0:
     resolution: {integrity: sha512-pBm6cMaOb0Yb0kg0Sfw/k4LwDMkPScb/NVd7GrEllDwfsPZstsZIo93A6Nn0wZuWJw3h57GdzkrOk81EofKY/g==}
 
-  react-dom@18.2.0:
-    resolution: {integrity: sha512-6IMTriUmvsjHUjNtEDudZfuDQUoWXVxKHhlEGSk81n4YFS+r/Kl99wXiwlVXtPBtJenozv2P+hxDsw9eA7Xo6g==}
-    peerDependencies:
-      react: ^18.2.0
-
   react-dom@18.3.1:
     resolution: {integrity: sha512-5m4nQKp+rZRb09LNH59GM4BxTh9251/ylbKIbpe7TpGxfJ+9kv6BLkLBXIjjspbgbnIBNqlI23tRnTWT0snUIw==}
     peerDependencies:
@@ -4874,10 +4881,6 @@ packages:
 
   react-is@18.3.1:
     resolution: {integrity: sha512-/LLMVyas0ljjAtoYiPqYiL8VWXzUUdThrmU5+n20DZv+a+ClRoevUzw5JxU+Ieh5/c87ytoTBV9G1FiKfNJdmg==}
-
-  react@18.2.0:
-    resolution: {integrity: sha512-/3IjMdb2L9QbBdWiW5e3P2/npwMBaU9mHCSCUzNln0ZCYbcfTsGbTJrU/kGemdH2IWmB2ioZ+zkxtmq6g09fGQ==}
-    engines: {node: '>=0.10.0'}
 
   react@18.3.1:
     resolution: {integrity: sha512-wS+hAgJShR0KhEvPJArfuPVN1+Hz1t0Y6n5jLrGQbkb4urgPE/0Rve+1kMB1v/oWgHgm4WIcV+i7F2pTVj+2iQ==}
@@ -7066,30 +7069,6 @@ snapshots:
 
   '@protobufjs/utf8@1.1.0': {}
 
-  '@radix-ui/react-compose-refs@1.1.2(@types/react@18.3.28)(react@18.2.0)':
-    dependencies:
-      react: 18.2.0
-    optionalDependencies:
-      '@types/react': 18.3.28
-
-  '@radix-ui/react-slot@1.2.4(@types/react@18.3.28)(react@18.2.0)':
-    dependencies:
-      '@radix-ui/react-compose-refs': 1.1.2(@types/react@18.3.28)(react@18.2.0)
-      react: 18.2.0
-    optionalDependencies:
-      '@types/react': 18.3.28
-
-  '@react-google-maps/api@2.20.8(react-dom@18.2.0(react@18.2.0))(react@18.2.0)':
-    dependencies:
-      '@googlemaps/js-api-loader': 1.16.8
-      '@googlemaps/markerclusterer': 2.5.3
-      '@react-google-maps/infobox': 2.20.0
-      '@react-google-maps/marker-clusterer': 2.20.0
-      '@types/google.maps': 3.58.1
-      invariant: 2.2.4
-      react: 18.2.0
-      react-dom: 18.2.0(react@18.2.0)
-
   '@react-google-maps/api@2.20.8(react-dom@18.3.1(react@18.3.1))(react@18.3.1)':
     dependencies:
       '@googlemaps/js-api-loader': 1.16.8
@@ -9267,14 +9246,14 @@ snapshots:
 
   fraction.js@5.3.4: {}
 
-  framer-motion@12.40.0(react-dom@18.2.0(react@18.2.0))(react@18.2.0):
+  framer-motion@12.40.0(react-dom@18.3.1(react@18.3.1))(react@18.3.1):
     dependencies:
       motion-dom: 12.40.0
       motion-utils: 12.39.0
       tslib: 2.8.1
     optionalDependencies:
-      react: 18.2.0
-      react-dom: 18.2.0(react@18.2.0)
+      react: 18.3.1
+      react-dom: 18.3.1(react@18.3.1)
 
   fresh@0.5.2: {}
 
@@ -10506,10 +10485,6 @@ snapshots:
       is-number: 2.1.0
       through2: 2.0.5
 
-  lucide-react@0.370.0(react@18.2.0):
-    dependencies:
-      react: 18.2.0
-
   lucide-react@0.370.0(react@18.3.1):
     dependencies:
       react: 18.3.1
@@ -10733,32 +10708,6 @@ snapshots:
   neo-async@2.6.2: {}
 
   netmask@2.1.1: {}
-
-  next@14.2.35(@opentelemetry/api@1.9.1)(react-dom@18.2.0(react@18.2.0))(react@18.2.0):
-    dependencies:
-      '@next/env': 14.2.35
-      '@swc/helpers': 0.5.5
-      busboy: 1.6.0
-      caniuse-lite: 1.0.30001788
-      graceful-fs: 4.2.11
-      postcss: 8.4.31
-      react: 18.2.0
-      react-dom: 18.2.0(react@18.2.0)
-      styled-jsx: 5.1.1(react@18.2.0)
-    optionalDependencies:
-      '@next/swc-darwin-arm64': 14.2.33
-      '@next/swc-darwin-x64': 14.2.33
-      '@next/swc-linux-arm64-gnu': 14.2.33
-      '@next/swc-linux-arm64-musl': 14.2.33
-      '@next/swc-linux-x64-gnu': 14.2.33
-      '@next/swc-linux-x64-musl': 14.2.33
-      '@next/swc-win32-arm64-msvc': 14.2.33
-      '@next/swc-win32-ia32-msvc': 14.2.33
-      '@next/swc-win32-x64-msvc': 14.2.33
-      '@opentelemetry/api': 1.9.1
-    transitivePeerDependencies:
-      - '@babel/core'
-      - babel-plugin-macros
 
   next@14.2.35(@opentelemetry/api@1.9.1)(react-dom@18.3.1(react@18.3.1))(react@18.3.1):
     dependencies:
@@ -11304,12 +11253,6 @@ snapshots:
       - supports-color
     optional: true
 
-  react-dom@18.2.0(react@18.2.0):
-    dependencies:
-      loose-envify: 1.4.0
-      react: 18.2.0
-      scheduler: 0.23.2
-
   react-dom@18.3.1(react@18.3.1):
     dependencies:
       loose-envify: 1.4.0
@@ -11319,10 +11262,6 @@ snapshots:
   react-is@16.13.1: {}
 
   react-is@18.3.1: {}
-
-  react@18.2.0:
-    dependencies:
-      loose-envify: 1.4.0
 
   react@18.3.1:
     dependencies:
@@ -11830,11 +11769,6 @@ snapshots:
     optional: true
 
   stubs@3.0.0: {}
-
-  styled-jsx@5.1.1(react@18.2.0):
-    dependencies:
-      client-only: 0.0.1
-      react: 18.2.0
 
   styled-jsx@5.1.1(react@18.3.1):
     dependencies:
