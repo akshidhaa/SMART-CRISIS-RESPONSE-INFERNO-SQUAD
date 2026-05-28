@@ -3,8 +3,9 @@
 import { useState, type FormEvent } from 'react';
 import { useRouter } from 'next/navigation';
 import { FirebaseError } from 'firebase/app';
-
 import { signIn, signUp } from '../../lib/auth';
+import { getDoc, doc } from 'firebase/firestore';
+import { auth, db } from '../../lib/firebase';
 
 export default function LoginPage() {
   const router = useRouter();
@@ -21,14 +22,23 @@ export default function LoginPage() {
     setError(null);
     try {
       if (mode === 'signIn') {
-  await signIn(email, password);
-} else {
-  await signUp({ email, password, displayName });
-}
-router.replace('/');
+        await signIn(email, password);
+      } else {
+        await signUp({ email, password, displayName });
+      }
+      const uid = auth.currentUser?.uid;
+      if (uid) {
+        const snap = await getDoc(doc(db, 'users', uid));
+        const role = snap.exists() ? snap.data().role : null;
+        if (role === 'admin') router.replace('/admin/overview');
+        else if (role === 'employee') router.replace('/employee/home');
+        else if (role === 'community') router.replace('/community/home');
+        else router.replace('/');
+      } else {
+        router.replace('/');
+      }
     } catch (err) {
-      const message =
-        err instanceof FirebaseError ? err.message : 'Authentication failed.';
+      const message = err instanceof FirebaseError ? err.message : 'Authentication failed.';
       setError(message);
     } finally {
       setBusy(false);
@@ -37,68 +47,32 @@ router.replace('/');
 
   return (
     <main className="flex min-h-screen items-center justify-center p-6">
-      <form
-        onSubmit={onSubmit}
-        className="w-full max-w-sm space-y-4 rounded-lg border bg-card p-6 shadow-sm"
-      >
+      <form onSubmit={onSubmit} className="w-full max-w-sm space-y-4 rounded-lg border bg-card p-6 shadow-sm">
         <header className="space-y-1">
-          <h1 className="text-2xl font-semibold">
-            {mode === 'signIn' ? 'Sign in' : 'Create account'}
-          </h1>
-          <p className="text-sm text-muted-foreground">
-            SCR-Mesh Admin — role is assigned by a facility admin after sign-up.
-          </p>
+          <h1 className="text-2xl font-semibold">{mode === 'signIn' ? 'Sign in' : 'Create account'}</h1>
+          <p className="text-sm text-muted-foreground">SCR-Mesh — role assigned by facility admin after sign-up.</p>
         </header>
-
         {mode === 'signUp' && (
-          <input
-            type="text"
-            placeholder="Display name"
-            value={displayName}
+          <input type="text" placeholder="Display name" value={displayName}
             onChange={(e) => setDisplayName(e.target.value)}
-            className="w-full rounded-md border border-input bg-background px-3 py-2 text-sm"
-          />
+            className="w-full rounded-md border border-input bg-background px-3 py-2 text-sm" />
         )}
-        <input
-          type="email"
-          placeholder="you@example.com"
-          value={email}
+        <input type="email" placeholder="you@example.com" value={email} required
           onChange={(e) => setEmail(e.target.value)}
-          required
-          className="w-full rounded-md border border-input bg-background px-3 py-2 text-sm"
-        />
-        <input
-          type="password"
-          placeholder="Password"
-          value={password}
+          className="w-full rounded-md border border-input bg-background px-3 py-2 text-sm" />
+        <input type="password" placeholder="Password" value={password} required minLength={6}
           onChange={(e) => setPassword(e.target.value)}
-          required
-          minLength={6}
-          className="w-full rounded-md border border-input bg-background px-3 py-2 text-sm"
-        />
-
+          className="w-full rounded-md border border-input bg-background px-3 py-2 text-sm" />
         {error && (
-          <p className="rounded-md bg-destructive/10 px-3 py-2 text-sm text-destructive">
-            {error}
-          </p>
+          <p className="rounded-md bg-destructive/10 px-3 py-2 text-sm text-destructive">{error}</p>
         )}
-
-        <button
-          type="submit"
-          disabled={busy}
-          className="w-full rounded-md bg-primary py-2 text-sm font-medium text-primary-foreground disabled:opacity-50"
-        >
+        <button type="submit" disabled={busy}
+          className="w-full rounded-md bg-primary py-2 text-sm font-medium text-primary-foreground disabled:opacity-50">
           {busy ? '…' : mode === 'signIn' ? 'Sign in' : 'Create account'}
         </button>
-
-        <button
-          type="button"
-          onClick={() => setMode(mode === 'signIn' ? 'signUp' : 'signIn')}
-          className="w-full text-xs text-muted-foreground hover:text-foreground"
-        >
-          {mode === 'signIn'
-            ? "Don't have an account? Sign up"
-            : 'Already have an account? Sign in'}
+        <button type="button" onClick={() => setMode(mode === 'signIn' ? 'signUp' : 'signIn')}
+          className="w-full text-xs text-muted-foreground hover:text-foreground">
+          {mode === 'signIn' ? "Don't have an account? Sign up" : 'Already have an account? Sign in'}
         </button>
       </form>
     </main>

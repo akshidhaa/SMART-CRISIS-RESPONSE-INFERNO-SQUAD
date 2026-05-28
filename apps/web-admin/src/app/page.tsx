@@ -1,7 +1,6 @@
 'use client';
 
-import { useEffect, useState } from 'react';
-import { useRouter } from 'next/navigation';
+import { useState } from 'react';
 import Link from 'next/link';
 import { motion, AnimatePresence } from 'framer-motion';
 import {
@@ -9,8 +8,8 @@ import {
   Zap, Globe, ShieldCheck, ArrowRight, Play, QrCode,
   AlertTriangle, Brain, Radio, ChevronRight,
 } from 'lucide-react';
-import { useAuth } from '../lib/auth';
 import { Button } from '@/components/ui/button';
+import { useEffect } from 'react';
 
 const FACILITIES = [
   { type: 'hospital', label: 'Hospital', Icon: HeartPulse, color: '#ef4444', bg: '#450a0a', tagline: 'Code Blue / Mass Casualty' },
@@ -55,7 +54,6 @@ const CASCADE_STEPS = [
 function MeshDiagram() {
   const [active, setActive] = useState(false);
   useEffect(() => { const t = setTimeout(() => setActive(true), 800); return () => clearTimeout(t); }, []);
-
   return (
     <div className="relative mx-auto w-full max-w-lg select-none">
       <svg viewBox="0 0 480 310" className="w-full" style={{ filter: 'drop-shadow(0 0 24px rgba(99,102,241,0.3))' }}>
@@ -65,8 +63,7 @@ function MeshDiagram() {
             <motion.line key={i} x1={pa.x} y1={pa.y} x2={pb.x} y2={pb.y}
               stroke="#6366f1" strokeWidth={1.5} strokeOpacity={0}
               animate={active ? { strokeOpacity: 0.5 } : {}}
-              transition={{ delay: 0.2 + i * 0.08, duration: 0.6 }}
-            />
+              transition={{ delay: 0.2 + i * 0.08, duration: 0.6 }} />
           );
         })}
         {FACILITIES.map(({ type, label, color }, i) => {
@@ -85,8 +82,7 @@ function MeshDiagram() {
           <motion.circle cx={NODE_POS.factory.x} cy={NODE_POS.factory.y} r={22}
             fill="none" stroke="#eab308" strokeWidth={2}
             animate={{ r: [22, 42], opacity: [0.8, 0] }}
-            transition={{ repeat: Infinity, duration: 1.6, ease: 'easeOut' }}
-          />
+            transition={{ repeat: Infinity, duration: 1.6, ease: 'easeOut' }} />
         )}
       </svg>
       <motion.div
@@ -135,13 +131,11 @@ function CascadeTerminal() {
     const t = setTimeout(() => setVisible((v) => v + 1), 700);
     return () => clearTimeout(t);
   }, [visible]);
-
   const HOP_COLOR: Record<string, string> = { '0→1': '#22c55e', '1→2': '#3b82f6', '2→3': '#a855f7' };
   const SRC_COLOR: Record<string, string> = {
     factory: '#eab308', hospital: '#ef4444', hotel: '#f59e0b',
     school: '#3b82f6', college: '#a855f7', system: '#10b981',
   };
-
   return (
     <div className="overflow-hidden rounded-xl border border-slate-800 bg-slate-950 font-mono text-xs">
       <div className="flex items-center gap-2 border-b border-slate-800 px-4 py-2">
@@ -177,31 +171,11 @@ function CascadeTerminal() {
   );
 }
 
-// ─── Root page ────────────────────────────────────────────────────────────────
-
 export default function RootPage() {
-  const router = useRouter();
-  const { user, role, loading } = useAuth();
-
-  useEffect(() => {
-    if (loading) return;
-    if (!user) return;
-    if (role === 'admin') router.replace('/admin/overview');
-    else if (role === 'employee') router.replace('/employee/home');
-    else if (role === 'community') router.replace('/community/home');
-  }, [loading, user, role, router]);
-
-  if (loading) {
-    return (
-      <div className="flex min-h-screen items-center justify-center bg-slate-950">
-        <div className="h-8 w-8 animate-spin rounded-full border-2 border-indigo-500 border-t-transparent" />
-      </div>
-    );
-  }
-
+  // NO auto-redirect — landing page always shows first
+  // Redirect happens only after login in login/page.tsx
   return (
     <div className="min-h-screen bg-slate-950 text-slate-100 antialiased">
-
       <header className="sticky top-0 z-50 border-b border-slate-800/60 bg-slate-950/90 backdrop-blur">
         <div className="mx-auto flex max-w-6xl items-center justify-between px-6 py-3">
           <div className="flex items-center gap-2.5">
@@ -210,9 +184,7 @@ export default function RootPage() {
           </div>
           <div className="flex items-center gap-3">
             <Link href="/login">
-              <Button size="sm" variant="outline" className="border-indigo-500/40 text-indigo-300 hover:bg-indigo-500/10">
-                Sign in
-              </Button>
+              <Button size="sm" variant="outline" className="border-indigo-500/40 text-indigo-300 hover:bg-indigo-500/10">Sign in</Button>
             </Link>
             <Link href="/bootstrap">
               <Button size="sm" className="bg-indigo-600 text-white hover:bg-indigo-500">
@@ -230,13 +202,10 @@ export default function RootPage() {
         <motion.div initial={{ opacity: 0, y: 24 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.7 }} className="relative mx-auto max-w-3xl">
           <h1 className="mb-5 text-4xl font-extrabold leading-tight tracking-tight sm:text-5xl lg:text-6xl">
             One Network.<br />
-            <span className="bg-gradient-to-r from-indigo-400 to-violet-400 bg-clip-text text-transparent">Every Crisis.</span>{' '}
-            Every Facility.
+            <span className="bg-gradient-to-r from-indigo-400 to-violet-400 bg-clip-text text-transparent">Every Crisis.</span>{' '}Every Facility.
           </h1>
           <p className="mx-auto mb-8 max-w-xl text-base text-slate-400 leading-relaxed">
-            SCR-Mesh connects hospitals, hotels, schools, colleges, and factories
-            into a single real-time coordination mesh — so a factory fire triggers
-            hospital readiness, school sheltering, and hotel evacuation in under 60 seconds.
+            SCR-Mesh connects hospitals, hotels, schools, colleges, and factories into a single real-time coordination mesh — so a factory fire triggers hospital readiness, school sheltering, and hotel evacuation in under 60 seconds.
           </p>
           <div className="flex flex-wrap items-center justify-center gap-3">
             <Link href="/login">
@@ -323,9 +292,7 @@ export default function RootPage() {
           <div className="grid gap-6 lg:grid-cols-2">
             <div className="rounded-2xl border border-slate-800 bg-slate-900 p-7">
               <div className="mb-5 flex items-center gap-2.5">
-                <div className="rounded-lg border border-violet-500/20 bg-violet-950/50 p-2">
-                  <Brain className="h-5 w-5 text-violet-400" />
-                </div>
+                <div className="rounded-lg border border-violet-500/20 bg-violet-950/50 p-2"><Brain className="h-5 w-5 text-violet-400" /></div>
                 <div>
                   <div className="font-semibold">AI Detection (YOLOv8 + Gemini)</div>
                   <div className="text-xs text-slate-500">Real-time anomaly detection across all facility types</div>
@@ -353,9 +320,7 @@ export default function RootPage() {
             </div>
             <div className="rounded-2xl border border-slate-800 bg-slate-900 p-7">
               <div className="mb-5 flex items-center gap-2.5">
-                <div className="rounded-lg border border-red-500/20 bg-red-950/50 p-2">
-                  <Globe className="h-5 w-5 text-red-400" />
-                </div>
+                <div className="rounded-lg border border-red-500/20 bg-red-950/50 p-2"><Globe className="h-5 w-5 text-red-400" /></div>
                 <div>
                   <div className="font-semibold">3-Language Alert Dispatch</div>
                   <div className="text-xs text-slate-500">EN · HI · TA — Gemini-powered</div>
@@ -363,8 +328,7 @@ export default function RootPage() {
               </div>
               <AlertCarousel />
               <p className="mt-4 text-[11px] text-slate-500 leading-relaxed">
-                Gemini generates culturally appropriate translations under 140 characters.
-                Dispatched via FCM push, Twilio SMS, and in-app — simultaneously.
+                Gemini generates culturally appropriate translations under 140 characters. Dispatched via FCM push, Twilio SMS, and in-app — simultaneously.
               </p>
             </div>
           </div>
@@ -378,12 +342,12 @@ export default function RootPage() {
           </div>
           <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
             {[
-              { title: 'Admin Dashboard', desc: 'Facility-adaptive UI — hospital admins see red-cross iconography, factory managers see industrial yellow/black. Incident management, staff control, mesh settings.', color: 'indigo', icon: ShieldCheck, href: '/login' },
-              { title: 'Employee Mobile App', desc: 'One-thumb acknowledgement. Playbook-driven task checklists. FCM push + haptic on critical. Offline-first Firestore. Facility-specific defaults (Tamil for school in Tamil Nadu).', color: 'violet', icon: Zap, href: '/login' },
-              { title: 'Community SOS', desc: 'Press-and-hold SOS with facility-scoped incident picker. A school student sees "Lockdown / Fire / Medical". A factory worker sees "Injury / Chemical / Equipment".', color: 'rose', icon: AlertTriangle, href: '/community/sos' },
-              { title: 'Live Mesh Map', desc: 'Full-screen Google Maps with animated arcs between facilities as mesh events fire. Time scrubber to replay any past cascade. Heatmap overlay for incident density.', color: 'emerald', icon: Radio, href: '/login' },
-              { title: 'Indoor Navigation', desc: 'Dijkstra pathfinding on pre-built zone graphs for all 5 facility types. Blocked zones avoided in real-time. SVG viewer + admin zone graph editor.', color: 'blue', icon: QrCode, href: '/community/navigate' },
-              { title: 'Connectivity Fallback', desc: 'Wi-Fi → BLE mesh → Cellular simulation. Alerts reach employees even when local network is down. Switchable from the dev toolbar during demo.', color: 'amber', icon: Globe, href: '/bootstrap' },
+              { title: 'Admin Dashboard', desc: 'Facility-adaptive UI — hospital admins see red-cross iconography, factory managers see industrial yellow/black.', color: 'indigo', icon: ShieldCheck, href: '/login' },
+              { title: 'Employee Mobile App', desc: 'One-thumb acknowledgement. Playbook-driven task checklists. FCM push + haptic on critical. Offline-first Firestore.', color: 'violet', icon: Zap, href: '/login' },
+              { title: 'Community SOS', desc: 'Press-and-hold SOS with facility-scoped incident picker. A school student sees "Lockdown / Fire / Medical".', color: 'rose', icon: AlertTriangle, href: '/community/sos' },
+              { title: 'Live Mesh Map', desc: 'Full-screen Google Maps with animated arcs between facilities as mesh events fire. Time scrubber to replay any past cascade.', color: 'emerald', icon: Radio, href: '/login' },
+              { title: 'Indoor Navigation', desc: 'Dijkstra pathfinding on pre-built zone graphs for all 5 facility types. Blocked zones avoided in real-time.', color: 'blue', icon: QrCode, href: '/community/navigate' },
+              { title: 'Connectivity Fallback', desc: 'Wi-Fi → BLE mesh → Cellular simulation. Alerts reach employees even when local network is down.', color: 'amber', icon: Globe, href: '/bootstrap' },
             ].map(({ title, desc, color, icon: Icon, href }) => (
               <Link key={title} href={href}>
                 <motion.div initial={{ opacity: 0, y: 16 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }}
@@ -403,10 +367,7 @@ export default function RootPage() {
       <section className="px-6 py-20 text-center">
         <div className="mx-auto max-w-2xl">
           <h2 className="mb-4 text-2xl font-bold sm:text-3xl">Ready to see all 5 facilities coordinate?</h2>
-          <p className="mb-8 text-slate-400">
-            Seed demo data, trigger the grand finale cascade, and watch 881 users
-            across a hospital, hotel, school, college, and factory get coordinated in under 60 seconds.
-          </p>
+          <p className="mb-8 text-slate-400">Seed demo data, trigger the grand finale cascade, and watch 881 users across a hospital, hotel, school, college, and factory get coordinated in under 60 seconds.</p>
           <div className="flex flex-wrap items-center justify-center gap-3">
             <Link href="/login">
               <Button size="lg" className="gap-2 bg-indigo-600 text-white hover:bg-indigo-500">
@@ -414,14 +375,11 @@ export default function RootPage() {
               </Button>
             </Link>
             <Link href="/bootstrap">
-              <Button size="lg" variant="outline" className="gap-2 border-slate-700 text-slate-300 hover:bg-slate-800">
-                Seed Demo Data
-              </Button>
+              <Button size="lg" variant="outline" className="gap-2 border-slate-700 text-slate-300 hover:bg-slate-800">Seed Demo Data</Button>
             </Link>
           </div>
         </div>
       </section>
-
     </div>
   );
 }
