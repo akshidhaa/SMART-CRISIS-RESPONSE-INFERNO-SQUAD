@@ -29,10 +29,6 @@ import {
 } from '@scr-mesh/constants';
 import type { Incident, IncidentSeverity, IncidentStatus } from '@scr-mesh/types';
 
-// ---------------------------------------------------------------------------
-// Filters
-// ---------------------------------------------------------------------------
-
 const ALL_STATUSES: (IncidentStatus | 'all')[] = [
   'all', 'reported', 'acknowledged', 'in_progress', 'resolved', 'closed',
 ];
@@ -45,10 +41,6 @@ const NEXT_STATUS: Record<IncidentStatus, IncidentStatus | null> = {
   resolved: 'closed',
   closed: null,
 };
-
-// ---------------------------------------------------------------------------
-// Create-incident form state
-// ---------------------------------------------------------------------------
 
 interface CreateForm {
   type: string;
@@ -66,10 +58,6 @@ const BLANK_FORM: CreateForm = {
   description: '',
 };
 
-// ---------------------------------------------------------------------------
-// Page
-// ---------------------------------------------------------------------------
-
 export default function IncidentsPage() {
   const { currentFacilityId, user, role } = useAuth();
   const uid = user?.uid;
@@ -81,7 +69,6 @@ export default function IncidentsPage() {
   const [typeFilter, setTypeFilter] = useState<string>('all');
   const [zoneFilter, setZoneFilter] = useState<string>('all');
 
-  // Create-form state
   const [showCreate, setShowCreate] = useState(false);
   const [form, setForm] = useState<CreateForm>(BLANK_FORM);
   const [submitting, setSubmitting] = useState(false);
@@ -99,13 +86,13 @@ export default function IncidentsPage() {
   }, [currentFacilityId]);
 
   const incidentTypes = facility ? INCIDENT_TYPES_BY_FACILITY[facility.data.type] : [];
-  const zonePresets = facility ? ZONE_PRESETS[facility.data.type] : [];
 
   const zones = useMemo(() => {
+    const zonePresets = facility ? ZONE_PRESETS[facility.data.type] : [];
     const set = new Set<string>(zonePresets);
     incidents.forEach((i) => set.add(i.location.zone));
     return Array.from(set).sort();
-  }, [incidents, zonePresets]);
+  }, [incidents, facility]);
 
   const filtered = incidents
     .filter((i) => statusFilter === 'all' || i.status === statusFilter)
@@ -114,7 +101,6 @@ export default function IncidentsPage() {
     .filter((i) => zoneFilter === 'all' || i.location.zone === zoneFilter)
     .sort((a, b) => toMillis(b.createdAt) - toMillis(a.createdAt));
 
-  // Auto-fill severity from incident type default
   function handleTypeChange(value: string) {
     const typeOption = incidentTypes.find((t) => t.value === value);
     setForm((f) => ({
@@ -168,7 +154,6 @@ export default function IncidentsPage() {
 
   return (
     <div className="space-y-6">
-      {/* Header */}
       <div className="flex items-center justify-between">
         <div>
           <h1 className="text-2xl font-semibold tracking-tight">Incidents</h1>
@@ -181,9 +166,6 @@ export default function IncidentsPage() {
         </Button>
       </div>
 
-      {/* ------------------------------------------------------------------ */}
-      {/* Create incident form                                                */}
-      {/* ------------------------------------------------------------------ */}
       {showCreate && (
         <Card className="border-primary/40">
           <CardHeader>
@@ -191,7 +173,6 @@ export default function IncidentsPage() {
           </CardHeader>
           <CardContent>
             <form onSubmit={handleCreate} className="grid grid-cols-1 gap-4 sm:grid-cols-2">
-              {/* Type */}
               <div className="sm:col-span-2">
                 <Label className="mb-1 block">Incident type *</Label>
                 <Select
@@ -206,7 +187,6 @@ export default function IncidentsPage() {
                 </Select>
               </div>
 
-              {/* Severity */}
               <div>
                 <Label className="mb-1 block">Severity</Label>
                 <Select
@@ -219,7 +199,6 @@ export default function IncidentsPage() {
                 </Select>
               </div>
 
-              {/* Zone */}
               <div>
                 <Label className="mb-1 block">Zone *</Label>
                 <Select
@@ -234,7 +213,6 @@ export default function IncidentsPage() {
                 </Select>
               </div>
 
-              {/* Floor */}
               <div>
                 <Label className="mb-1 block">Floor / Level</Label>
                 <Input
@@ -244,7 +222,6 @@ export default function IncidentsPage() {
                 />
               </div>
 
-              {/* Description */}
               <div className="sm:col-span-2">
                 <Label className="mb-1 block">Description</Label>
                 <Textarea
@@ -276,9 +253,6 @@ export default function IncidentsPage() {
         </Card>
       )}
 
-      {/* ------------------------------------------------------------------ */}
-      {/* Filters                                                             */}
-      {/* ------------------------------------------------------------------ */}
       <Card>
         <CardHeader>
           <CardTitle>Filters</CardTitle>
@@ -321,9 +295,6 @@ export default function IncidentsPage() {
         </CardContent>
       </Card>
 
-      {/* ------------------------------------------------------------------ */}
-      {/* Incident list                                                       */}
-      {/* ------------------------------------------------------------------ */}
       <Card>
         <CardHeader>
           <CardTitle>{filtered.length} incident{filtered.length === 1 ? '' : 's'}</CardTitle>
