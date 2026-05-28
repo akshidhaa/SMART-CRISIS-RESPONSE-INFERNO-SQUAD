@@ -1,5 +1,4 @@
 'use client';
-
 import {
   createContext,
   useCallback,
@@ -12,7 +11,6 @@ import {
 import { onAuthStateChanged, type User as FirebaseUser } from 'firebase/auth';
 import { doc, onSnapshot } from 'firebase/firestore';
 import type { Language, User, UserRole } from '@scr-mesh/types';
-
 import { auth, db } from '../firebase';
 
 const STORAGE_KEY = 'scr-mesh.currentFacilityId';
@@ -41,7 +39,6 @@ export function AuthProvider({ children }: { children: ReactNode }) {
       typeof window !== 'undefined'
         ? window.localStorage.getItem(STORAGE_KEY)
         : null;
-
     if (stored) setCurrentFacilityIdState(stored);
   }, []);
 
@@ -50,36 +47,18 @@ export function AuthProvider({ children }: { children: ReactNode }) {
       if (next) {
         setUser(next);
       } else {
-        // DEMO MODE
-        setUser({ uid: 'demo-user', email: 'demo@example.com' } as FirebaseUser);
-
-setProfile({
-  email: 'demo@example.com',
-  displayName: 'Demo Admin',
-  role: 'admin',
-  facilityIds: ['demo_hospital', 'demo_hotel', 'demo_school'],
-  createdAt: new Date() as any,
-  updatedAt: new Date() as any,
-} as any);
-        setCurrentFacilityIdState('demo_hospital');
+        setUser(null);
+        setProfile(null);
         setLoading(false);
       }
     });
-
     return unsubAuth;
   }, []);
 
   useEffect(() => {
     if (!user) return;
-
-    if (user.uid === 'demo-user') {
-      return;
-    }
-
     setLoading(true);
-
     const ref = doc(db, 'users', user.uid);
-
     const unsub = onSnapshot(
       ref,
       (snap) => {
@@ -95,18 +74,15 @@ setProfile({
         setLoading(false);
       }
     );
-
     return unsub;
   }, [user]);
 
   useEffect(() => {
     const ids = profile?.facilityIds ?? [];
-
     if (ids.length === 0) {
       setCurrentFacilityIdState(null);
       return;
     }
-
     if (!currentFacilityId || !ids.includes(currentFacilityId)) {
       setCurrentFacilityIdState(ids[0]);
     }
@@ -114,7 +90,6 @@ setProfile({
 
   const setCurrentFacilityId = useCallback((facilityId: string) => {
     setCurrentFacilityIdState(facilityId);
-
     if (typeof window !== 'undefined') {
       window.localStorage.setItem(STORAGE_KEY, facilityId);
     }
@@ -143,10 +118,8 @@ setProfile({
 
 export function useAuth(): AuthContextValue {
   const ctx = useContext(AuthContext);
-
   if (!ctx) {
     throw new Error('useAuth must be used inside <AuthProvider>.');
   }
-
   return ctx;
 }
