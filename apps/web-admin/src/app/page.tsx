@@ -12,8 +12,6 @@ import {
 import { useAuth } from '../lib/auth';
 import { Button } from '@/components/ui/button';
 
-// ─── Facility type registry ──────────────────────────────────────────────────
-
 const FACILITIES = [
   { type: 'hospital', label: 'Hospital', Icon: HeartPulse, color: '#ef4444', bg: '#450a0a', tagline: 'Code Blue / Mass Casualty' },
   { type: 'hotel', label: 'Hotel', Icon: Hotel, color: '#f59e0b', bg: '#451a03', tagline: 'Fire / Guest Emergency' },
@@ -21,8 +19,6 @@ const FACILITIES = [
   { type: 'college', label: 'College', Icon: GraduationCap, color: '#a855f7', bg: '#2e1065', tagline: 'Lab Accident / Unrest' },
   { type: 'factory', label: 'Factory', Icon: Factory, color: '#eab308', bg: '#422006', tagline: 'Chemical Spill / Fire' },
 ] as const;
-
-// ─── Mesh node positions (SVG 480×280 canvas) ───────────────────────────────
 
 const NODE_POS: Record<string, { x: number; y: number }> = {
   hospital: { x: 240, y: 50 },
@@ -37,15 +33,11 @@ const MESH_EDGES = [
   ['hotel', 'school'], ['hotel', 'factory'], ['school', 'college'], ['college', 'factory'],
 ];
 
-// ─── Multi-language alert samples ────────────────────────────────────────────
-
 const ALERT_TRANSLATIONS = [
   { lang: 'English', code: 'EN', text: 'CRITICAL: Chemical spill at Apex Factory. Shelter in place immediately. Seal all windows.' },
   { lang: 'Hindi',   code: 'HI', text: 'गंभीर: एपेक्स फैक्ट्री में रासायनिक रिसाव। तुरंत सुरक्षित स्थान में रहें। सभी खिड़कियां बंद करें।' },
   { lang: 'Tamil',   code: 'TA', text: 'அவசரம்: ஆபெக்ஸ் ஆலையில் இரசாயன கசிவு. உடனடியாக உள்ளே தங்குங்கள். அனைத்து ஜன்னல்களையும் மூடுங்கள்.' },
 ];
-
-// ─── Cascade timeline for the "money shot" terminal ──────────────────────────
 
 const CASCADE_STEPS = [
   { t: '0.0s', src: 'factory', msg: 'FIRE detected — Floor 1 + Floor 2 engulfed', hop: null },
@@ -60,17 +52,6 @@ const CASCADE_STEPS = [
   { t: '55.0s', src: 'system', msg: '✅  ALL 5 FACILITIES COORDINATED — 881 users notified', hop: null },
 ];
 
-const TECH_STACK = [
-  { name: 'Firebase', desc: 'Auth · Firestore · Functions · Hosting' },
-  { name: 'Gemini AI', desc: 'Incident triage · Multilingual alerts' },
-  { name: 'Google Maps', desc: 'Facility map · Directions · Transit' },
-  { name: 'Cloud Run', desc: 'AI Detection · Mesh Coordinator' },
-  { name: 'Next.js 14', desc: 'App Router · RSC · PWA' },
-  { name: 'YOLOv8', desc: 'Weapon · Fire · Chemical spill detection' },
-];
-
-// ─── Animated mesh diagram ────────────────────────────────────────────────────
-
 function MeshDiagram() {
   const [active, setActive] = useState(false);
   useEffect(() => { const t = setTimeout(() => setActive(true), 800); return () => clearTimeout(t); }, []);
@@ -78,68 +59,44 @@ function MeshDiagram() {
   return (
     <div className="relative mx-auto w-full max-w-lg select-none">
       <svg viewBox="0 0 480 310" className="w-full" style={{ filter: 'drop-shadow(0 0 24px rgba(99,102,241,0.3))' }}>
-        {/* Edges */}
         {MESH_EDGES.map(([a, b], i) => {
           const pa = NODE_POS[a]; const pb = NODE_POS[b];
           return (
-            <motion.line
-              key={i}
-              x1={pa.x} y1={pa.y} x2={pb.x} y2={pb.y}
-              stroke="#6366f1"
-              strokeWidth={1.5}
-              strokeOpacity={0}
+            <motion.line key={i} x1={pa.x} y1={pa.y} x2={pb.x} y2={pb.y}
+              stroke="#6366f1" strokeWidth={1.5} strokeOpacity={0}
               animate={active ? { strokeOpacity: 0.5 } : {}}
               transition={{ delay: 0.2 + i * 0.08, duration: 0.6 }}
             />
           );
         })}
-
-        {/* Nodes */}
-        {FACILITIES.map(({ type, label, Icon, color }, i) => {
+        {FACILITIES.map(({ type, label, color }, i) => {
           const { x, y } = NODE_POS[type];
           return (
-            <motion.g
-              key={type}
-              initial={{ opacity: 0, scale: 0.4 }}
-              animate={{ opacity: 1, scale: 1 }}
-              transition={{ delay: 0.1 + i * 0.12, type: 'spring', stiffness: 200 }}
-            >
-              {/* Glow ring */}
+            <motion.g key={type} initial={{ opacity: 0, scale: 0.4 }} animate={{ opacity: 1, scale: 1 }}
+              transition={{ delay: 0.1 + i * 0.12, type: 'spring', stiffness: 200 }}>
               <circle cx={x} cy={y} r={28} fill={color} opacity={0.15} />
-              {/* Node circle */}
               <circle cx={x} cy={y} r={22} fill="#0f172a" stroke={color} strokeWidth={2} />
-              {/* Label below */}
               <text x={x} y={y + 38} textAnchor="middle" fill="#94a3b8" fontSize={10}
-                fontFamily="system-ui, sans-serif" fontWeight="600">
-                {label}
-              </text>
+                fontFamily="system-ui, sans-serif" fontWeight="600">{label}</text>
             </motion.g>
           );
         })}
-
-        {/* Pulse ring for factory (the cascade origin) */}
         {active && (
-          <motion.circle
-            cx={NODE_POS.factory.x} cy={NODE_POS.factory.y} r={22}
+          <motion.circle cx={NODE_POS.factory.x} cy={NODE_POS.factory.y} r={22}
             fill="none" stroke="#eab308" strokeWidth={2}
             animate={{ r: [22, 42], opacity: [0.8, 0] }}
             transition={{ repeat: Infinity, duration: 1.6, ease: 'easeOut' }}
           />
         )}
       </svg>
-
-      {/* Floating label */}
       <motion.div
         className="absolute bottom-0 left-1/2 -translate-x-1/2 rounded-full border border-indigo-500/30 bg-indigo-950/80 px-4 py-1 text-xs font-semibold text-indigo-300 backdrop-blur"
-        initial={{ opacity: 0, y: 8 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 1.2 }}
-      >
+        initial={{ opacity: 0, y: 8 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 1.2 }}>
         5 facility types · 1 unified mesh
       </motion.div>
     </div>
   );
 }
-
-// ─── Alert language carousel ──────────────────────────────────────────────────
 
 function AlertCarousel() {
   const [idx, setIdx] = useState(0);
@@ -147,23 +104,16 @@ function AlertCarousel() {
     const t = setInterval(() => setIdx((i) => (i + 1) % ALERT_TRANSLATIONS.length), 2800);
     return () => clearInterval(t);
   }, []);
-
   const item = ALERT_TRANSLATIONS[idx];
   return (
     <div className="rounded-xl border border-red-900/50 bg-red-950/30 p-5">
       <div className="mb-3 flex items-center gap-2">
         <span className="h-2 w-2 rounded-full bg-red-500 animate-pulse" />
         <span className="text-xs font-bold uppercase tracking-widest text-red-400">Live Alert</span>
-        <span className="ml-auto rounded-full bg-red-900/40 px-2 py-0.5 text-[10px] font-bold text-red-300">
-          {item.code}
-        </span>
+        <span className="ml-auto rounded-full bg-red-900/40 px-2 py-0.5 text-[10px] font-bold text-red-300">{item.code}</span>
       </div>
       <AnimatePresence mode="wait">
-        <motion.div
-          key={idx}
-          initial={{ opacity: 0, y: 6 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0, y: -6 }}
-          transition={{ duration: 0.3 }}
-        >
+        <motion.div key={idx} initial={{ opacity: 0, y: 6 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0, y: -6 }} transition={{ duration: 0.3 }}>
           <p className="text-xs font-medium text-slate-200 leading-relaxed">{item.lang}</p>
           <p className="mt-1 text-sm text-slate-400 leading-relaxed">{item.text}</p>
         </motion.div>
@@ -171,15 +121,12 @@ function AlertCarousel() {
       <div className="mt-4 flex gap-1.5">
         {ALERT_TRANSLATIONS.map((_, i) => (
           <button key={i} onClick={() => setIdx(i)}
-            className={`h-1.5 rounded-full transition-all ${i === idx ? 'w-5 bg-red-500' : 'w-1.5 bg-slate-700'}`}
-          />
+            className={`h-1.5 rounded-full transition-all ${i === idx ? 'w-5 bg-red-500' : 'w-1.5 bg-slate-700'}`} />
         ))}
       </div>
     </div>
   );
 }
-
-// ─── Cascade terminal ─────────────────────────────────────────────────────────
 
 function CascadeTerminal() {
   const [visible, setVisible] = useState(0);
@@ -189,9 +136,7 @@ function CascadeTerminal() {
     return () => clearTimeout(t);
   }, [visible]);
 
-  const HOP_COLOR: Record<string, string> = {
-    '0→1': '#22c55e', '1→2': '#3b82f6', '2→3': '#a855f7',
-  };
+  const HOP_COLOR: Record<string, string> = { '0→1': '#22c55e', '1→2': '#3b82f6', '2→3': '#a855f7' };
   const SRC_COLOR: Record<string, string> = {
     factory: '#eab308', hospital: '#ef4444', hotel: '#f59e0b',
     school: '#3b82f6', college: '#a855f7', system: '#10b981',
@@ -210,10 +155,7 @@ function CascadeTerminal() {
           const srcKey = step.src.split('→')[0].split('+')[0];
           const srcColor = SRC_COLOR[srcKey] ?? '#94a3b8';
           return (
-            <motion.div key={i}
-              initial={{ opacity: 0, x: -8 }} animate={{ opacity: 1, x: 0 }} transition={{ duration: 0.2 }}
-              className="flex items-start gap-3"
-            >
+            <motion.div key={i} initial={{ opacity: 0, x: -8 }} animate={{ opacity: 1, x: 0 }} transition={{ duration: 0.2 }} className="flex items-start gap-3">
               <span className="shrink-0 text-slate-600">[T+{step.t}]</span>
               {step.hop && (
                 <span className="shrink-0 rounded px-1 text-[10px] font-bold"
@@ -241,23 +183,14 @@ export default function RootPage() {
   const router = useRouter();
   const { user, role, loading } = useAuth();
 
-  // Authenticated users -> Keep on landing page to allow choice
-  // (Previously redirected automatically, now allowing manual navigation)
   useEffect(() => {
-  if (loading) return;
-  if (!user) return;
-  if (role === 'admin') router.replace('/admin/overview');
-  else if (role === 'community') router.replace('/community/home');
-}, [user, role, loading, router]);
-  useEffect(() => {
-  if (loading) return;
-  if (!user) return;
-  if (role === 'admin') router.replace('/admin/overview');
-  else if (role === 'employee') router.replace('/employee/home');
-  else if (role === 'community') router.replace('/community/home');
-}, [loading, user, role, router]);
+    if (loading) return;
+    if (!user) return;
+    if (role === 'admin') router.replace('/admin/overview');
+    else if (role === 'employee') router.replace('/employee/home');
+    else if (role === 'community') router.replace('/community/home');
+  }, [loading, user, role, router]);
 
-  // While resolving auth, show nothing (avoids flash)
   if (loading) {
     return (
       <div className="flex min-h-screen items-center justify-center bg-slate-950">
@@ -266,12 +199,9 @@ export default function RootPage() {
     );
   }
 
-  // ─── Landing page (shown for all users) ────────────────────────────────────────
-
   return (
     <div className="min-h-screen bg-slate-950 text-slate-100 antialiased">
 
-      {/* ── Sticky nav ─────────────────────────────────────────────────────── */}
       <header className="sticky top-0 z-50 border-b border-slate-800/60 bg-slate-950/90 backdrop-blur">
         <div className="mx-auto flex max-w-6xl items-center justify-between px-6 py-3">
           <div className="flex items-center gap-2.5">
@@ -293,23 +223,14 @@ export default function RootPage() {
         </div>
       </header>
 
-      {/* ── Hero ───────────────────────────────────────────────────────────── */}
       <section className="relative overflow-hidden px-6 py-24 text-center">
-        {/* Background glow */}
         <div className="pointer-events-none absolute inset-0 flex items-center justify-center">
           <div className="h-96 w-96 rounded-full bg-indigo-600/10 blur-3xl" />
         </div>
-
-        <motion.div
-          initial={{ opacity: 0, y: 24 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.7 }}
-          className="relative mx-auto max-w-3xl"
-        >
-
+        <motion.div initial={{ opacity: 0, y: 24 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.7 }} className="relative mx-auto max-w-3xl">
           <h1 className="mb-5 text-4xl font-extrabold leading-tight tracking-tight sm:text-5xl lg:text-6xl">
             One Network.<br />
-            <span className="bg-gradient-to-r from-indigo-400 to-violet-400 bg-clip-text text-transparent">
-              Every Crisis.
-            </span>{' '}
+            <span className="bg-gradient-to-r from-indigo-400 to-violet-400 bg-clip-text text-transparent">Every Crisis.</span>{' '}
             Every Facility.
           </h1>
           <p className="mx-auto mb-8 max-w-xl text-base text-slate-400 leading-relaxed">
@@ -327,7 +248,6 @@ export default function RootPage() {
         </motion.div>
       </section>
 
-      {/* ── Problem: 5 siloed cards ─────────────────────────────────────────── */}
       <section className="px-6 py-16">
         <div className="mx-auto max-w-6xl">
           <div className="mb-10 text-center">
@@ -335,16 +255,12 @@ export default function RootPage() {
             <h2 className="text-2xl font-bold sm:text-3xl">Five facilities. Five silos. Zero coordination.</h2>
             <p className="mt-3 text-slate-400">When a factory has a chemical spill, who tells the school across the street?</p>
           </div>
-
           <div className="grid grid-cols-2 gap-3 sm:grid-cols-5">
             {FACILITIES.map(({ label, Icon, color, bg, tagline }, i) => (
-              <motion.div
-                key={label}
-                initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }}
+              <motion.div key={label} initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }}
                 transition={{ delay: i * 0.08 }} viewport={{ once: true }}
                 className="rounded-xl border p-4 text-center"
-                style={{ borderColor: color + '30', backgroundColor: bg }}
-              >
+                style={{ borderColor: color + '30', backgroundColor: bg }}>
                 <Icon className="mx-auto mb-2 h-7 w-7" style={{ color }} />
                 <div className="text-sm font-semibold">{label}</div>
                 <div className="mt-1 text-[10px] text-slate-500">{tagline}</div>
@@ -354,7 +270,6 @@ export default function RootPage() {
         </div>
       </section>
 
-      {/* ── Solution: animated mesh ─────────────────────────────────────────── */}
       <section className="px-6 py-16">
         <div className="mx-auto max-w-6xl">
           <div className="mb-10 text-center">
@@ -362,7 +277,6 @@ export default function RootPage() {
             <h2 className="text-2xl font-bold sm:text-3xl">One coordinated mesh across all 5 types</h2>
             <p className="mt-3 text-slate-400">Every facility becomes a node. Every crisis propagates coordinated actions across the network.</p>
           </div>
-
           <div className="grid items-center gap-12 lg:grid-cols-2">
             <MeshDiagram />
             <div className="space-y-5">
@@ -386,7 +300,6 @@ export default function RootPage() {
         </div>
       </section>
 
-      {/* ── Grand finale cascade terminal ───────────────────────────────────── */}
       <section className="px-6 py-16">
         <div className="mx-auto max-w-6xl">
           <div className="mb-8 text-center">
@@ -394,9 +307,7 @@ export default function RootPage() {
             <h2 className="text-2xl font-bold sm:text-3xl">Community Cascade — live terminal</h2>
             <p className="mt-3 text-slate-400">Factory fire → Hospital → Hotel. 7 mesh events. 3 hops. All 5 facilities coordinated in 55 seconds.</p>
           </div>
-          <div className="mx-auto max-w-3xl">
-            <CascadeTerminal />
-          </div>
+          <div className="mx-auto max-w-3xl"><CascadeTerminal /></div>
           <div className="mt-6 flex justify-center">
             <Link href="/admin/mesh/live">
               <Button variant="outline" className="gap-2 border-emerald-500/30 text-emerald-400 hover:bg-emerald-500/10">
@@ -407,11 +318,9 @@ export default function RootPage() {
         </div>
       </section>
 
-      {/* ── AI Detection + Multi-language ──────────────────────────────────── */}
       <section className="px-6 py-16">
         <div className="mx-auto max-w-6xl">
           <div className="grid gap-6 lg:grid-cols-2">
-            {/* AI Detection */}
             <div className="rounded-2xl border border-slate-800 bg-slate-900 p-7">
               <div className="mb-5 flex items-center gap-2.5">
                 <div className="rounded-lg border border-violet-500/20 bg-violet-950/50 p-2">
@@ -436,15 +345,12 @@ export default function RootPage() {
                     </div>
                     <div className="text-xs font-bold text-emerald-400">{confidence}</div>
                     <div className="h-1.5 w-16 overflow-hidden rounded-full bg-slate-800">
-                      <div className="h-full rounded-full bg-emerald-500"
-                        style={{ width: confidence }} />
+                      <div className="h-full rounded-full bg-emerald-500" style={{ width: confidence }} />
                     </div>
                   </div>
                 ))}
               </div>
             </div>
-
-            {/* Multi-language alerts */}
             <div className="rounded-2xl border border-slate-800 bg-slate-900 p-7">
               <div className="mb-5 flex items-center gap-2.5">
                 <div className="rounded-lg border border-red-500/20 bg-red-950/50 p-2">
@@ -465,7 +371,6 @@ export default function RootPage() {
         </div>
       </section>
 
-      {/* ── Feature highlights ──────────────────────────────────────────────── */}
       <section className="px-6 py-16">
         <div className="mx-auto max-w-6xl">
           <div className="mb-10 text-center">
@@ -481,11 +386,8 @@ export default function RootPage() {
               { title: 'Connectivity Fallback', desc: 'Wi-Fi → BLE mesh → Cellular simulation. Alerts reach employees even when local network is down. Switchable from the dev toolbar during demo.', color: 'amber', icon: Globe, href: '/bootstrap' },
             ].map(({ title, desc, color, icon: Icon, href }) => (
               <Link key={title} href={href}>
-                <motion.div
-                  initial={{ opacity: 0, y: 16 }} whileInView={{ opacity: 1, y: 0 }}
-                  viewport={{ once: true }}
-                  className="rounded-xl border border-slate-800 bg-slate-900 p-5 hover:border-slate-700 hover:bg-slate-800/50 transition-all cursor-pointer h-full block"
-                >
+                <motion.div initial={{ opacity: 0, y: 16 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }}
+                  className="rounded-xl border border-slate-800 bg-slate-900 p-5 hover:border-slate-700 hover:bg-slate-800/50 transition-all cursor-pointer h-full block">
                   <div className={`mb-3 inline-flex rounded-lg border border-${color}-500/20 bg-${color}-950/40 p-2`}>
                     <Icon className={`h-4 w-4 text-${color}-400`} />
                   </div>
@@ -498,15 +400,9 @@ export default function RootPage() {
         </div>
       </section>
 
-      {/* ── Tech stack ──────────────────────────────────────────────────────── */}
-
-
-      {/* ── Final CTA ───────────────────────────────────────────────────────── */}
       <section className="px-6 py-20 text-center">
         <div className="mx-auto max-w-2xl">
-          <h2 className="mb-4 text-2xl font-bold sm:text-3xl">
-            Ready to see all 5 facilities coordinate?
-          </h2>
+          <h2 className="mb-4 text-2xl font-bold sm:text-3xl">Ready to see all 5 facilities coordinate?</h2>
           <p className="mb-8 text-slate-400">
             Seed demo data, trigger the grand finale cascade, and watch 881 users
             across a hospital, hotel, school, college, and factory get coordinated in under 60 seconds.
@@ -525,8 +421,6 @@ export default function RootPage() {
           </div>
         </div>
       </section>
-
-      {/* ── Footer ─────────────────────────────────────────────────────────── */}
 
     </div>
   );
