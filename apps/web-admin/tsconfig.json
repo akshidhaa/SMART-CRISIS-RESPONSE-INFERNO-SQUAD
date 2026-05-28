@@ -15,7 +15,10 @@
     "forceConsistentCasingInFileNames": true,
     "allowJs": true,
     "paths": {
-      "@/*": ["./src/*"]
+      "@/*": ["./src/*"],
+      "@scr-mesh/types": ["../../shared/types/src/index.ts"],
+      "@scr-mesh/constants": ["../../shared/constants/src/index.ts"],
+      "@scr-mesh/playbooks": ["../../shared/playbooks/src/index.ts"]
     },
     "plugins": [{ "name": "next" }]
   },
